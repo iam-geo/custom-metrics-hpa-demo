@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+      containers:
+      - name: python-producer-container
+        image: iamgeo/misc:python-producer-v8 # Geoff's personal docker repo in docker hub
+        env:
+        - name: "RABBITMQ_SERVER_NAME"
+          value: "rabbitmq-service"
+        - name: "RABBITMQ_SERVER_PORT"
+          value: "5672"
+        - name: "RABBITMQ_QUEUE_NAME"
+          value: "my_queue"
+        - name: "PRODUCER_DELAY_SECONDS"
+          value: "1"
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+          requests:
+            cpu: "50m"
+            memory: "50Mi"

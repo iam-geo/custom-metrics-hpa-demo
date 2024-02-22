@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+      - name: python-consumer-container
+        image: iamgeo/misc:python-consumer-v8 # Geoff's personal docker repo in docker hub
+        env:
+        - name: "RABBITMQ_SERVER_NAME"
+          value: "rabbitmq-service"
+        - name: "RABBITMQ_SERVER_PORT"
+          value: "5672"
+        - name: "RABBITMQ_QUEUE_NAME"
+          value: "my_queue"
+        - name: "CONSUMER_DELAY_SECONDS"
+          value: "3"
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "512Mi"
+          requests:
+            cpu: "50m"
+            memory: "50Mi"

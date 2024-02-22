@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq-container
+        image: rabbitmq:3.13-rc-management
+        ports:
+        - containerPort: 5672  # default port
+        - containerPort: 15672 # management ui port
+        - containerPort: 15692 # prometheus metrics port
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - name: rabbitmq-default
+      protocol: TCP
+      port: 5672
+      targetPort: 5672
+    - name: rabbitmq-mgmt
+      protocol: TCP
+      port: 15672
+      targetPort: 15672
+    - name: rabbitmq-metrics
+      protocol: TCP
+      port: 15692
+      targetPort: 15692
+  type: LoadBalancer
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: rabbitmq-mgtm-service
+# spec:
+#   selector:
+#     app: rabbitmq
+#   ports:
+#     - protocol: TCP
+#       port: 15672
+#       targetPort: 15672
+#   type: LoadBalancer
