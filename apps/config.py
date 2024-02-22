@@ -17,4 +17,5 @@ config = Config(
     producer_delay_sec=int(os.environ.get("PRODUCER_DELAY_SECONDS", 1)),
     rabbitmq_server_name=os.environ["RABBITMQ_SERVER_NAME"],
     rabbitmq_server_port=int(os.environ["RABBITMQ_SERVER_PORT"]),
-    rabbitmq_queue_name=os.environ["RABBITMQ_QUEUE_NAME"],)
+    rabbitmq_queue_name=os.environ["RABBITMQ_QUEUE_NAME"],
+)

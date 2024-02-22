@@ -11,17 +11,19 @@ def callback(ch, method, properties, body):
 
 
 def consumer():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(
-        host=config.rabbitmq_server_name,
-        port=config.rabbitmq_server_port))
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(
+            host=config.rabbitmq_server_name, port=config.rabbitmq_server_port
+        )
+    )
     channel = connection.channel()
 
     channel.queue_declare(queue=config.rabbitmq_queue_name)
     channel.basic_consume(
-        queue=config.rabbitmq_queue_name,
-        on_message_callback=callback)
+        queue=config.rabbitmq_queue_name, on_message_callback=callback
+    )
 
-    print(' [*] Waiting for messages. To exit press CTRL+C')
+    print(" [*] Waiting for messages. To exit press CTRL+C")
     channel.start_consuming()
 
     connection.close()

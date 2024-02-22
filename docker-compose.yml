@@ -19,7 +19,6 @@ services:
       - ./:/app
       - ./.flake8:/.flake8
 
-
   black:
     image: pyfound/black:24.2.0
     command: ["black", "/app"]
