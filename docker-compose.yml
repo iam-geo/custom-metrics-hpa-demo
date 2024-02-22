@@ -3,26 +3,13 @@ version: '3'
 services:
 
   producer:
-    image: iamgeo/misc:python-producer-v8
+    image: iamgeo/misc:python-producer-v9
     build:
       context: .
       dockerfile: ./docker/Dockerfile.producer
 
   consumer:
-    image: iamgeo/misc:python-consumer-v8
+    image: iamgeo/misc:python-consumer-v9
     build:
       context: .
       dockerfile: ./docker/Dockerfile.consumer
-
-  flake8:
-    image: alpine/flake8:6.0.0
-    command: ["flake8", "-v","/app"]
-    volumes:
-      - ./:/app
-      - ./.flake8:/.flake8
-
-  black:
-    image: pyfound/black:24.2.0
-    command: ["black", "/app"]
-    volumes:
-      - ./:/app

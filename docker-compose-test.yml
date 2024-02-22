@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+
+  flake8:
+    image: alpine/flake8:6.0.0
+    command: ["flake8", "-v","/app"]
+    volumes:
+      - ./:/app
+      - ./.flake8:/.flake8
+
+  black:
+    image: pyfound/black:24.2.0
+    command: ["black", "/app"]
+    volumes:
+      - ./:/app

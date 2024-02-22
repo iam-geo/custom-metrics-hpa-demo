@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: python-consumer-container
-        image: iamgeo/misc:python-consumer-v8 # Geoff's personal docker repo in docker hub
+        image: iamgeo/misc:python-consumer-v9 # Geoff's personal docker repo in docker hub
         env:
         - name: "RABBITMQ_SERVER_NAME"
           value: "rabbitmq-service"

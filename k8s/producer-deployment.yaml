@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: python-producer-container
-        image: iamgeo/misc:python-producer-v8 # Geoff's personal docker repo in docker hub
+        image: iamgeo/misc:python-producer-v9 # Geoff's personal docker repo in docker hub
         env:
         - name: "RABBITMQ_SERVER_NAME"
           value: "rabbitmq-service"
