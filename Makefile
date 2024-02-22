@@ -19,7 +19,7 @@ deploy:
 	kubectl apply -f ./k8s/producer-deployment.yaml $(ARGS)
 	kubectl apply -f ./k8s/consumer-deployment.yaml $(ARGS)
 
-.PHONE: clean
+.PHONY: clean
 clean:
 # Mnitoring tools
 	kubectl delete -f ./k8s/grafana.yaml --context="$(KUBE_CONTEXT)"
@@ -31,3 +31,8 @@ clean:
 	kubectl delete -f ./k8s/producer-deployment.yaml --context="$(KUBE_CONTEXT)"
 	kubectl delete -f ./k8s/hpa.yaml --context="$(KUBE_CONTEXT)"
 	kubectl delete -f ./k8s/rabbitmq-deployment.yaml --context="$(KUBE_CONTEXT)"
+
+.PHONY: tests
+tests:
+	docker-compose -f docker-compose-test.yml run black
+	docker-compose -f docker-compose-test.yml run flake8
