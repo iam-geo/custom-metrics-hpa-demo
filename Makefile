@@ -21,16 +21,16 @@ deploy:
 
 .PHONY: clean
 clean:
-# Mnitoring tools
-	kubectl delete -f ./k8s/grafana.yaml --context="$(KUBE_CONTEXT)"
-	kubectl delete -f ./k8s/prometheus-adapter-deployment.yaml --context="$(KUBE_CONTEXT)"
-	kubectl delete -f ./k8s/prometheus-deployment.yaml --context="$(KUBE_CONTEXT)"
-	kubectl delete -f ./k8s/monitoring-namespace.yaml --context="$(KUBE_CONTEXT)"
 # Apps
-	kubectl delete -f ./k8s/consumer-deployment.yaml --context="$(KUBE_CONTEXT)"
-	kubectl delete -f ./k8s/producer-deployment.yaml --context="$(KUBE_CONTEXT)"
-	kubectl delete -f ./k8s/hpa.yaml --context="$(KUBE_CONTEXT)"
-	kubectl delete -f ./k8s/rabbitmq-deployment.yaml --context="$(KUBE_CONTEXT)"
+	-kubectl delete -f ./k8s/consumer-deployment.yaml --context="$(KUBE_CONTEXT)"
+	-kubectl delete -f ./k8s/producer-deployment.yaml --context="$(KUBE_CONTEXT)"
+	-kubectl delete -f ./k8s/hpa.yaml --context="$(KUBE_CONTEXT)"
+	-kubectl delete -f ./k8s/rabbitmq-deployment.yaml --context="$(KUBE_CONTEXT)"
+# Mnitoring tools
+	-kubectl delete -f ./k8s/prometheus-deployment.yaml $(ARGS)
+	-kubectl delete -f ./k8s/prometheus-adapter-deployment.yaml $(ARGS)
+	-kubectl delete -f ./k8s/grafana.yaml $(ARGS)
+	-kubectl delete -f ./k8s/monitoring-namespace.yaml $(ARGS)
 
 .PHONY: tests
 tests:
