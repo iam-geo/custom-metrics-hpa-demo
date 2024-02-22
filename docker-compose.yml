@@ -1,11 +1,13 @@
 version: '3'
 
 services:
+
   producer:
     image: iamgeo/misc:python-producer-v8
     build:
       context: .
       dockerfile: ./docker/Dockerfile.producer
+
   consumer:
     image: iamgeo/misc:python-consumer-v8
     build:
