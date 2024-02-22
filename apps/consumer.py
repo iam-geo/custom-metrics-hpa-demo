@@ -3,10 +3,12 @@ import time
 
 from apps.config import config
 
+
 def callback(ch, method, properties, body):
     print(f"Received {body}")
     time.sleep(config.consumer_delay_sec)
-    ch.basic_ack(delivery_tag = method.delivery_tag)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
 
 def consumer():
     connection = pika.BlockingConnection(pika.ConnectionParameters(

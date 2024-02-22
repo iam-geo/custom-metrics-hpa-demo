@@ -1,18 +1,33 @@
-# Makefile for generating TLS certs for the Prometheus custom metrics API adapter
+# Variables. Configure these for your environment
+KUBE_CONTEXT:=minikube
+KUBE_CLUSTER:=minikube
+
+ARGS:=--context="$(KUBE_CONTEXT)" --cluster="$(KUBE_CLUSTER)"
+
+all: deploy
 
 .PHONY: deploy
 deploy:
-	kubectl create -f ./k8s/monitoring-namespace.yaml
-	kubectl create -f ./k8s/prometheus-deployment.yaml
-	kubectl create -f ./k8s/prometheus-adapter-deployment.yaml
-	kubectl create -f ./k8s/rabbitmq-deployment.yaml
-	kubectl create -f ./k8s/hpa.yaml
+# Monitoring tools
+	kubectl apply -f ./k8s/monitoring-namespace.yaml $(ARGS)
+	kubectl apply -f ./k8s/prometheus-deployment.yaml $(ARGS)
+	kubectl apply -f ./k8s/prometheus-adapter-deployment.yaml $(ARGS)
+	kubectl apply -f ./k8s/grafana.yaml $(ARGS)
+# Apps
+	kubectl apply -f ./k8s/rabbitmq-deployment.yaml $(ARGS)
+	kubectl apply -f ./k8s/hpa.yaml $(ARGS)
+	kubectl apply -f ./k8s/producer-deployment.yaml $(ARGS)
+	kubectl apply -f ./k8s/consumer-deployment.yaml $(ARGS)
 
-start-simulation:
-	kubectl apply -f ./k8s/producer-deployment.yaml
-	echo " == Sleeping 20 to load up queue." > /dev/null
-	sleep 20
-	kubectl apply -f ./k8s/consumer-deployment.yaml
-	echo " == Watch TARGET and REPLICAS for autoscaling action" > /dev/null
-	echo " == Press CTRL+C to exit" > /dev/null
-	kubectl get hpa consumer-deployment-hpa --watch
+.PHONE: clean
+clean:
+# Mnitoring tools
+	kubectl delete -f ./k8s/grafana.yaml --context="$(KUBE_CONTEXT)"
+	kubectl delete -f ./k8s/prometheus-adapter-deployment.yaml --context="$(KUBE_CONTEXT)"
+	kubectl delete -f ./k8s/prometheus-deployment.yaml --context="$(KUBE_CONTEXT)"
+	kubectl delete -f ./k8s/monitoring-namespace.yaml --context="$(KUBE_CONTEXT)"
+# Apps
+	kubectl delete -f ./k8s/consumer-deployment.yaml --context="$(KUBE_CONTEXT)"
+	kubectl delete -f ./k8s/producer-deployment.yaml --context="$(KUBE_CONTEXT)"
+	kubectl delete -f ./k8s/hpa.yaml --context="$(KUBE_CONTEXT)"
+	kubectl delete -f ./k8s/rabbitmq-deployment.yaml --context="$(KUBE_CONTEXT)"

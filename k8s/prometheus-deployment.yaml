@@ -22,12 +22,14 @@ rules:
     verbs: ["get", "list", "watch"]
   - nonResourceURLs: ["/metrics", "/metrics/cadvisor"]
     verbs: ["get"]
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: prometheus
   namespace: monitoring
+
 ---
 apiVersion: v1
 kind: Secret
@@ -37,6 +39,7 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: prometheus
 type: kubernetes.io/service-account-token
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -65,17 +68,20 @@ data:
       scrape_interval: 5s
 
     scrape_configs:
+
       # Scrape config for API servers.
       - job_name: "kubernetes-apiservers"
 
         kubernetes_sd_configs:
           - role: endpoints
+
         scheme: https
         tls_config:
           ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           insecure_skip_verify: true
         authorization:
           credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+
         relabel_configs:
           - source_labels:
               [
@@ -88,34 +94,41 @@ data:
 
       # Scrape config for nodes (kubelet).
       - job_name: "kubernetes-nodes"
+
+        kubernetes_sd_configs:
+          - role: node
+
         scheme: https
         tls_config:
           ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           insecure_skip_verify: true
         authorization:
           credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-        kubernetes_sd_configs:
-          - role: node
+
         relabel_configs:
           - action: labelmap
             regex: __meta_kubernetes_node_label_(.+)
 
       # Scrape config for Kubelet cAdvisor.
       - job_name: "kubernetes-cadvisor"
-        scheme: https
+
+        kubernetes_sd_configs:
+          - role: node
+
         metrics_path: /metrics/cadvisor
+
+        scheme: https
         tls_config:
           ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           insecure_skip_verify: true
         authorization:
           credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-        kubernetes_sd_configs:
-          - role: node
+
         relabel_configs:
           - action: labelmap
             regex: __meta_kubernetes_node_label_(.+)
 
-      # Example scrape config for service endpoints.
+      # Scrape config for service endpoints.
       - job_name: "kubernetes-service-endpoints"
 
         kubernetes_sd_configs:
@@ -124,14 +137,16 @@ data:
         relabel_configs:
           - action: labelmap
             regex: __meta_kubernetes_service_label_(.+)
+
           - source_labels: [__meta_kubernetes_namespace]
             action: replace
             target_label: namespace
+
           - source_labels: [__meta_kubernetes_service_name]
             action: replace
             target_label: service
 
-      # Example scrape config for pods
+      # Scrape config for pods
       - job_name: "kubernetes-pods"
 
         kubernetes_sd_configs:
@@ -140,9 +155,11 @@ data:
         relabel_configs:
           - action: labelmap
             regex: __meta_kubernetes_pod_label_(.+)
+
           - source_labels: [__meta_kubernetes_namespace]
             action: replace
             target_label: namespace
+
           - source_labels: [__meta_kubernetes_pod_name]
             action: replace
             target_label: pod
@@ -169,6 +186,8 @@ kind: Deployment
 metadata:
   name: prometheus-deployment
   namespace: monitoring
+  labels:
+    app: prometheus
 spec:
   replicas: 1
   selector:

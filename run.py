@@ -3,6 +3,7 @@ import argparse
 from apps.producer import producer
 from apps.consumer import consumer
 
+
 def main():
     parser = argparse.ArgumentParser(description='Run a module')
     parser.add_argument('module', help='Name module to run')
