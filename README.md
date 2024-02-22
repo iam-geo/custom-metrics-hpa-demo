@@ -2,6 +2,8 @@
 
 This project demonstrates how to use custom metrics for autoscaling deployments.
 
+![image info](./docs/asset/grafana-screenshot.png)
+
 Components:
 
 * kubernetes cluster
@@ -36,7 +38,7 @@ Components:
 3. Deploy the setup.
 
     ```bash
-    make
+    make deploy
     ```
 
 > [!TIP]
@@ -55,4 +57,8 @@ Components:
     minikube --namespace=monitoring service grafana-service
     ```
 
-2. Locate or search for dashboard `custom-metrics-hpa-demo`.
+2. `CMD+k` or search for dashboard `custom-metrics-hpa-demo`.
+
+> [!NOTE]
+> It may take a few minutes for the systems to fully spin up for everything
+> to load smoothly.
