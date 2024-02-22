@@ -2,20 +2,17 @@
 
 This project demonstrates how to use custom metrics for autoscaling deployments.
 
-![image info](./docs/asset/grafana-screenshot.png)
+The consumer app will autoscale based on rabbitmq queue length.
+
+![grafana-screenshot](./docs/assets/grafana-screenshot.png)
 
 Components:
 
-* kubernetes cluster
-  * For running our containers
-* prometheus
-  * metric scraper and datastore
-* rabbitmq cluster
-  * message broker which we will scrape custom metrics for HPA
-* producer & consumer app
-  * python apps to generate and consumer messages
-* grafana
-  * for watching this in action
+* **kubernetes**: For running our containers
+* **prometheus**: Metric datastore and scraper
+* **rabbitmq cluster**: Message broker which we will scrape custom metrics for HPA
+* **producer & consumer app**: Python apps to generate and consume messages
+* **grafana**: For watching this in action
 
 ## Requirements
 
@@ -41,8 +38,7 @@ Components:
     make deploy
     ```
 
-> [!TIP]
-> Useful commands
+> [!TIP] Useful commands
 >
 > ```bash
 > make deploy # deploys the setup
