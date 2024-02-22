@@ -162,12 +162,9 @@ spec:
       serviceAccountName: prometheus
       containers:
       - name: prometheus-container
-        image: prom/prometheus
+        image: prom/prometheus:v2.50.0
         ports:
           - containerPort: 9090  # default port
-        volumeMounts:
-          - name: config
-            mountPath: /etc/prometheus
         resources:
           limits:
             cpu: "500m"
@@ -175,6 +172,9 @@ spec:
           requests:
             cpu: "100m"
             memory: "256Mi"
+        volumeMounts:
+          - name: config
+            mountPath: /etc/prometheus
       volumes:
         - name: config
           configMap:
