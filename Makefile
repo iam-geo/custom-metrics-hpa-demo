@@ -9,10 +9,11 @@ all: deploy
 .PHONY: deploy
 deploy:
 # Monitoring tools
+	kubectl apply -f ./k8s/kube-state-metrics/ $(ARGS)
 	kubectl apply -f ./k8s/monitoring-namespace.yaml $(ARGS)
 	kubectl apply -f ./k8s/prometheus-deployment.yaml $(ARGS)
 	kubectl apply -f ./k8s/prometheus-adapter-deployment.yaml $(ARGS)
-	kubectl apply -f ./k8s/grafana.yaml $(ARGS)
+	kubectl apply -f ./k8s/grafana/ $(ARGS)
 # Apps
 	kubectl apply -f ./k8s/rabbitmq-deployment.yaml $(ARGS)
 	kubectl apply -f ./k8s/hpa.yaml $(ARGS)
@@ -29,8 +30,9 @@ clean:
 # Mnitoring tools
 	-kubectl delete -f ./k8s/prometheus-deployment.yaml $(ARGS)
 	-kubectl delete -f ./k8s/prometheus-adapter-deployment.yaml $(ARGS)
-	-kubectl delete -f ./k8s/grafana.yaml $(ARGS)
+	-kubectl delete -f ./k8s/grafana/ $(ARGS)
 	-kubectl delete -f ./k8s/monitoring-namespace.yaml $(ARGS)
+	-kubectl delete -f ./k8s/kube-state-metrics/ $(ARGS)
 
 .PHONY: tests
 tests:
