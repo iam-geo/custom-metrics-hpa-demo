@@ -9,10 +9,13 @@ The consumer app will autoscale based on rabbitmq queue length.
 ## Components
 
 * **kubernetes**: For running our containers
-* **prometheus**: Metric datastore and scraper
-* **rabbitmq cluster**: Message broker which we will scrape custom metrics for HPA
+  * **kube-state-metrics**: Exposes k8s metrics for monitoring
+  * **hpa**: autoscales our consumer deployment
+* **prometheus**: Metric datastore and metric scraper
+* **prometheus-adapter**: Implements custom metrics api for HPA
+* **rabbitmq cluster**: Message broker which we will scrape custom metrics
 * **producer & consumer app**: Python apps to generate and consume messages
-* **grafana**: For watching this in action
+* **grafana**: For watching this demo in action
 
 ## Requirements
 
