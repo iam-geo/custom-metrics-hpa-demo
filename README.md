@@ -6,7 +6,7 @@ The consumer app will autoscale based on rabbitmq queue length.
 
 ![grafana-screenshot](./docs/assets/grafana-screenshot.png)
 
-Components:
+## Components
 
 * **kubernetes**: For running our containers
 * **prometheus**: Metric datastore and scraper
