@@ -41,9 +41,10 @@ The consumer app will autoscale based on rabbitmq queue length.
     make deploy
     ```
 
-> [!TIP] Useful commands
+> [!TIP]
 >
 > ```bash
+> # Useful commands
 > make deploy # deploys the setup
 > make clean # deletes the setup
 > ```
